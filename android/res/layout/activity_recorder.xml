@@ -2,13 +2,255 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:padding="5dp" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Large Text"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:background="@drawable/machine_up_background"
+        android:orientation="vertical"
+        android:padding="3dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/machine_lcd_background"
+            android:orientation="horizontal"
+            android:padding="5dp" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/rectframe"
+                android:padding="5dp" >
+
+                <TextView
+                    android:id="@+id/textcenterparent"
+                    android:layout_width="1dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true" />
+                
+                <TextView
+                    android:id="@+id/textTIME"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/textcenterparent"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:gravity="fill_vertical|right"
+                    android:text="-----"
+                    android:textSize="48sp" />
+
+                <TextView
+                    android:id="@+id/textTimeLable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_alignRight="@id/textcenterparent"
+                    android:layout_alignTop="@id/textTIME"
+                    android:layout_alignBottom="@id/textTIME"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:text="@string/timelabelname"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                
+                <TextView
+                    android:id="@+id/textElapsedTime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignBaseline="@+id/textTimeLable"
+                    android:layout_toLeftOf="@id/textTimeLable"
+                    android:text="-----"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                
+
+                <TextView
+                    android:id="@+id/textNumber"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textTIME"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="right"
+                    android:text="00"
+                    android:textSize="@dimen/splitline_font_size" />
+                
+                <TextView
+                    android:id="@+id/textNumberLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/textNumber"
+                    android:layout_alignBaseline="@id/textNumber"
+                    android:text="@string/numlabel"
+                    android:textSize="@dimen/splitline_font_size" />
+                
+                <TextView
+                    android:id="@+id/textSplit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textNumber"
+                    android:layout_marginTop="5dp"
+                    android:layout_alignLeft="@id/textNumber"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right"
+                    android:text="---"
+                    android:textSize="@dimen/splitline_font_size" />
+
+                <TextView
+                    android:id="@+id/textSplitLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/textSplit"
+                    android:layout_alignRight="@id/textNumberLabel"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/splitlabel"
+                    android:textSize="@dimen/splitline_font_size" />
+                
+                <TextView
+                    android:id="@+id/textmode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignBaseline="@id/textNumberLabel"
+                    android:text="@string/comstock"
+                    android:textSize="@dimen/mode_font_size" />
+                
+                
+                <TextView
+                    android:id="@+id/textModePrefix"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignBaseline="@id/textSplitLabel"
+                    android:text="@string/max_shots_label"
+                    android:textSize="@dimen/mode_font_size" />
+
+                <TextView
+                    android:id="@+id/textModeValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/textModePrefix"
+                    android:layout_toRightOf="@id/textModePrefix"
+                    android:layout_marginLeft="3dp"
+                    android:text="0"
+                    android:textSize="@dimen/mode_font_size" />
+
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/RelativeLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/btnMode"
+                android:layout_width="48dp"
+                android:layout_height="32dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/machine_button"
+                android:text="@string/btnmode"
+                android:textSize="10sp" />
+
+            <TableLayout
+                android:id="@+id/TableLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:layout_toRightOf="@+id/btnMode"
+                android:stretchColumns="*" >
+
+                <TableRow>
+
+                    <Button
+                        android:id="@+id/btnSub"
+                        android:layout_width="36dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="3dp"
+                        android:background="@drawable/machine_button"
+                        android:text="-"
+                        android:textSize="10sp" />
+
+                    <Button
+                        android:id="@+id/btnSubtenth"
+                        android:layout_width="36dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="3dp"
+                        android:background="@drawable/machine_button"
+                        android:text="-0.1"
+                        android:textSize="10sp" />
+
+                    <Button
+                        android:id="@+id/btnReset"
+                        android:layout_width="48dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="3dp"
+                        android:background="@drawable/machine_button"
+                        android:text="@string/reset"
+                        android:textSize="10sp" />
+
+                    <Button
+                        android:id="@+id/btnAddTenth"
+                        android:layout_width="36dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="3dp"
+                        android:background="@drawable/machine_button"
+                        android:text="+0.1"
+                        android:textSize="10sp" />
+
+                    <Button
+                        android:id="@+id/btnAdd"
+                        android:layout_width="36dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="3dp"
+                        android:background="@drawable/machine_button"
+                        android:text="+"
+                        android:textSize="10sp" />
+                </TableRow>
+            </TableLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/btnPrev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/machine_button"
+                android:text="@string/btnString_Prev"
+                android:textSize="36sp" />
+
+            <Button
+                android:id="@+id/btnStart"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/machine_button"
+                android:text="START"
+                android:textSize="36sp" />
+
+            <Button
+                android:id="@+id/btnNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/machine_button"
+                android:text="@string/btnStringNext"
+                android:textSize="36sp" />
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>
