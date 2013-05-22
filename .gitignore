@@ -16,6 +16,16 @@ local.properties
 .settings/
 .loadpath
 
+################################
+# Android Studio & IntelliJ IDEA
+# ##############################
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+
 # External tool builders
 .externalToolBuilders/
 

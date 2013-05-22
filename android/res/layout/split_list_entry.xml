@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="7dp" >
+    
+    <TextView
+        android:id="@+id/colNumber"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        android:layout_marginRight="10dp"
+        android:gravity="center_horizontal"
+        android:text="@string/col_header_number"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" />
+    
+    <TextView
+        android:id="@+id/colSplit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.4"
+        android:gravity="center"
+        android:text="@string/col_header_split"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"/>
+    
+    <TextView
+        android:id="@+id/colTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        android:gravity="center"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:text="@string/col_header_time" />
+
+</LinearLayout>

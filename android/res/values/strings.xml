@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string-array name="mode_names">
+        <item >COMSTOCK</item>
+        <item >VIRGINIA</item>
+        <item >PAR TIME</item>
+    </string-array>
+    
+    <string-array name="mode_value_names">
+        <item > </item>
+        <item >MAX.SHORTS:</item>
+        <item >MAX.TIMES:</item>
+    </string-array>
     <string name="app_name">Shot Recorder</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
@@ -17,16 +28,13 @@
     <string name="btnString_Prev">&lt;</string>
     <string name="btnStringNext">></string>
     
-    <string-array name="mode_names">
-        <item >COMSTOCK</item>
-        <item >VIRGINIA</item>
-        <item >PAR TIME</item>
-    </string-array>
-    
-    <string-array name="mode_value_names">
-        <item > </item>
-        <item >MAX.SHORTS:</item>
-        <item >MAX.TIMES:</item>
-    </string-array>
+    <string name="col_header_number">NUMBER</string>
+    <string name="col_header_split">SPLIT</string>
+    <string name="col_header_time">TIME</string>
+    <string name="strSTART">START</string>
+    <string name="strSTOP">STOP</string>
+    <string name="serviceisrunning">Shot Recorder is running...</string>
+    <string name="str_notify_title">Shot Recorder</string>
+    <string name="please_stop_record">Please Stop Record first.</string>
 
 </resources>
