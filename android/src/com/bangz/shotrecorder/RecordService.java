@@ -12,6 +12,8 @@ import android.os.*;
 import android.util.Log;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by royer on 19/05/13.
@@ -70,6 +72,8 @@ public class RecordService extends Service {
     private int mEncoding = AudioFormat.ENCODING_PCM_16BIT ;
 
     private int mRecordBufferSize = 0;
+
+    ArrayList<Long> mShotEvents = new ArrayList<Long>();
 
 
     /** total record samples in bytes */
@@ -147,12 +151,19 @@ public class RecordService extends Service {
 
 
     /** command to service to send all laps to client; service return all laps to client
-     *  use the <b>obj</b> param. it is a long[], each value is the shot elapsed time with the start record in millisecond.
-     *  */
+     *  use the <b>obj</b> param. it is a long[], each value is the shot elapsed time
+     *  with the start record in millisecond.
+     *  <p></p>
+     *  arg1:   -1; service set -1 to notify client there have new event arrived. If set >= 0
+     *              means this message obj events which the first event number(it is array
+     *              offset start 0).
+     *
+     */
     static final int MSG_LAPS = 5;
+    static final int EVENT_ARRIVED = -1;
 
     /**
-     * command service client need capture waveformdata. the arg0 is capture size {@link #mCaptureSize}
+     * command service to send client captured waveform data. the arg0 is capture size {@link #mCaptureSize}
      *
      *
      * service answer:
@@ -187,6 +198,9 @@ public class RecordService extends Service {
                     break;
                 case MSG_STOP_RECORD:
                     //TODO stop record
+                    break;
+                case MSG_LAPS:
+                    onHandleMsgLaps(msg);
                     break;
                 default:
                     super.handleMessage(msg);
@@ -297,6 +311,23 @@ public class RecordService extends Service {
         }
     }
 
+    synchronized private void onHandleMsgLaps(Message msg) {
+
+        if (msg.arg1 >= 0 && msg.arg1 < mShotEvents.size()) {
+            long[] events = new long[mShotEvents.size() - msg.arg1 ] ;
+
+            for(int i = 0,j = msg.arg1; i < events.length; i++,j++) {
+                events[i] = mShotEvents.get(j) ;
+            }
+            try {
+                if (mClient != null)
+                    mClient.send(Message.obtain(null, MSG_LAPS, msg.arg1, 0, events));
+            } catch (RemoteException e) {
+                e.printStackTrace();
+                mClient = null;
+            }
+        }
+    }
 
     private void startRecord() {
 
@@ -376,6 +407,22 @@ public class RecordService extends Service {
 
     }
 
+    synchronized private void AddNewEvents(Long[] events) {
+
+        mShotEvents.addAll(Arrays.asList(events));
+
+        if (mClient != null) {
+            try {
+                // arg0 = EVENT_ARRIVED(-1), is just notify client that has new event arrived.
+                mClient.send(Message.obtain(null, MSG_LAPS,EVENT_ARRIVED, 0));
+
+            } catch (RemoteException e) {
+                e.printStackTrace();
+                mClient = null ;
+            }
+        }
+    }
+
     class RecordThread extends Thread {
         @Override
         public void run() {
@@ -391,6 +438,10 @@ public class RecordService extends Service {
 
             int reportpostionsamples = (int)(50 * samplespermillisecond) ;
 
+            //TODO ThresholdDB should read from setting.
+            AmplitudeShotDetectAlgorithms asda = new AmplitudeShotDetectAlgorithms(90-96);
+
+            ShotDetector detector = new ShotDetector(mSampleRate,channels,asda,mRecordBufferSize / channels + 1) ;
 
             while(true) {
 
@@ -407,7 +458,11 @@ public class RecordService extends Service {
 
                 //TODO: save to temp file.
 
-                //todo detect shot event
+                Long[] shotevent = detector.doDetect(readbuffer, mSampleRate, channels, mEncoding);
+
+                if (shotevent.length > 0) {
+                    AddNewEvents(shotevent) ;
+                }
 
                 if ((mSamples - lastreportpostion) > reportpostionsamples) {
                     //report current postion(millisecond)

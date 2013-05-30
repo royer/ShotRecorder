@@ -36,5 +36,6 @@
     <string name="serviceisrunning">Shot Recorder is running...</string>
     <string name="str_notify_title">Shot Recorder</string>
     <string name="please_stop_record">Please Stop Record first.</string>
+    <string name="READY">READY</string>
 
 </resources>

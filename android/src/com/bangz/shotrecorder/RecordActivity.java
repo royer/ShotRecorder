@@ -72,8 +72,13 @@ public class RecordActivity extends SherlockFragmentActivity implements View.OnC
             switch(msg.what) {
                 case RecordService.MSG_RECORD_STATUS:
                     UpdateRecordStatus(msg) ;
+                    break;
                 case RecordService.MSG_POSITION:
                     UpdateCurrentPosition(msg) ;
+                    break;
+                case RecordService.MSG_LAPS:
+                    OnMessageLaps(msg) ;
+                    break;
                 default:
                     super.handleMessage(msg);
             }
@@ -167,9 +172,28 @@ public class RecordActivity extends SherlockFragmentActivity implements View.OnC
 
         String strText = String.format("%.02f",(float)msg.arg1 / 1000) ;
 
-        TextView txtElapsedTime = (TextView)findViewById(R.id.textElapsedTime) ;
-        txtElapsedTime.setText(strText) ;
+        textElapsed.setText(strText) ;
 
+    }
+
+    private void OnMessageLaps(Message msg) {
+        if(msg.arg1 == RecordService.EVENT_ARRIVED) {
+            if (mService != null) {
+                try {
+                    Message msgreturn = Message.obtain(null,RecordService.MSG_LAPS,mSplitManager.getNumbers(),0);
+                    msgreturn.replyTo = mMessenger ;
+                    mService.send(msgreturn) ;
+                } catch(RemoteException e) {
+
+                }
+            }
+        } else {
+            long[] events = (long[])msg.obj ;
+            for(long e : events) {
+                mSplitManager.append(e);
+                mSplitAdapter.notifyDataSetChanged();
+            }
+        }
     }
 
 
@@ -385,6 +409,8 @@ public class RecordActivity extends SherlockFragmentActivity implements View.OnC
         startService(intent);
 
         doBindService();
+
+        textTIME.setText(R.string.READY);
     }
 
     private void doStopRecord() {
@@ -415,13 +441,16 @@ public class RecordActivity extends SherlockFragmentActivity implements View.OnC
 		
 		Typeface tfItalic = TypefaceCache.getTypeface(TypefaceCache.FONT_ITALIC_PATH, this) ;
 		Typeface tfNormal = TypefaceCache.getTypeface(TypefaceCache.FONT_NORMAL_PATH, this) ;
-		
+
+
 		TextView v = (TextView)findViewById(R.id.textTIME) ;
-		
+        textTIME = v ;
+
 		v.setTypeface(tfItalic) ; // style bold | italic = 1| 2 = 3;
 		
 		v = (TextView)findViewById(R.id.textElapsedTime) ;
 		v.setTypeface(tfItalic);
+        textElapsed = v ;
 		
 		v = (TextView)findViewById(R.id.textTimeLable) ;
 		v.setTypeface(tfNormal);
@@ -440,12 +469,14 @@ public class RecordActivity extends SherlockFragmentActivity implements View.OnC
 		
 		v = (TextView)findViewById(R.id.textNumber) ;
 		v.setTypeface(tfItalic);
+        textNumber = v ;
 		
 		v = (TextView)findViewById(R.id.textSplitLabel);
 		v.setTypeface(tfItalic);
 		
 		v = (TextView)findViewById(R.id.textSplit);
 		v.setTypeface(tfItalic);
+        textSplit = v ;
 	}
 
 	private void updateMode() {
@@ -484,5 +515,9 @@ public class RecordActivity extends SherlockFragmentActivity implements View.OnC
     }
 
     private Button  btnStart ;
+    private TextView textTIME ;
+    private TextView textElapsed ;
+    private TextView textNumber ;
+    private TextView textSplit ;
 
 }

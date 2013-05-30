@@ -80,6 +80,10 @@ public class SplitManager implements Parcelable {
 		
 		Splits.remove(position) ;
 	}
+
+    public int getNumbers() {
+        return Splits.size();
+    }
 	
 	
 	public long getTotalElapsedTime() {
