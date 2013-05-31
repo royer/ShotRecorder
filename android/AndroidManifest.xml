@@ -35,6 +35,8 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
+        <activity android:name=".Prefs"/>
+
         <service android:name=".RecordService"
                 android:exported="false"
                 android:enabled="true" />

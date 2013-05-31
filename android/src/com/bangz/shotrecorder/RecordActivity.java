@@ -27,6 +27,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Typeface;
 import android.media.AudioFormat;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.os.*;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -35,12 +37,17 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 public class RecordActivity extends SherlockFragmentActivity implements View.OnClickListener {
 	
 	public static final String TAG = "RecorderActivity";
 
     public static final String EXTRA_STARTFROMNOTIFY = "START_FROM_NOTIFY";
+
+    private static final int BEEP_DURATIONMS = 500;
 	
 	public static final int	STATE_NORMAL 	= 0 ;
 	public static final int STATE_PREPARE	= 1;
@@ -49,8 +56,10 @@ public class RecordActivity extends SherlockFragmentActivity implements View.OnC
 
 	private int			mState ;
 
+    private boolean     mbModified = false ;
 
 
+    private int         mCurrentSplitIndex = -1;
 
     public static enum MODE { COMSTOCK, VIRGINIA, PAR_TIME }
 
@@ -116,6 +125,9 @@ public class RecordActivity extends SherlockFragmentActivity implements View.OnC
 
         try {
             mService.send(msg) ;
+            Message msggetlaps = Message.obtain(null,RecordService.MSG_LAPS,mSplitManager.getNumbers(),0);
+            mService.send(msggetlaps);
+
         } catch (RemoteException e) {
         }
     }
@@ -192,9 +204,14 @@ public class RecordActivity extends SherlockFragmentActivity implements View.OnC
             for(long e : events) {
                 mSplitManager.append(e);
                 mSplitAdapter.notifyDataSetChanged();
+                mbModified = true ;
             }
+
+            mCurrentSplitIndex = mSplitManager.getNumbers() - 1;
+            UpdateCurrentSplitView(mCurrentSplitIndex) ;
         }
     }
+
 
 
     /**
@@ -274,6 +291,28 @@ public class RecordActivity extends SherlockFragmentActivity implements View.OnC
 
 	}
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //return super.onCreateOptionsMenu(menu);
+
+        MenuInflater inflater = getSupportMenuInflater();
+        inflater.inflate(R.menu.recorder,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch(item.getItemId()) {
+            case R.id.action_settings:
+                startActivity(new Intent(this, Prefs.class));
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+        return true;
+    }
 
     @Override
     protected void onStart() {
@@ -367,6 +406,12 @@ public class RecordActivity extends SherlockFragmentActivity implements View.OnC
 
         btnStart = (Button)findViewById(R.id.btnStart) ;
         btnStart.setOnClickListener(this);
+
+        btnmode = (Button)findViewById(R.id.btnPrev);
+        btnmode.setOnClickListener(this);
+
+        btnmode = (Button)findViewById(R.id.btnNext);
+        btnmode.setOnClickListener(this);
 	}
 
     @Override
@@ -374,12 +419,23 @@ public class RecordActivity extends SherlockFragmentActivity implements View.OnC
 
         if(R.id.btnStart == v.getId()) {
             onStartButtonClick();
+        } else if (R.id.btnPrev == v.getId()) {
+            if (mCurrentSplitIndex > 0 ) {
+                mCurrentSplitIndex-- ;
+                UpdateCurrentSplitView(mCurrentSplitIndex);
+            }
+        } else if (R.id.btnNext == v.getId()) {
+            if (mCurrentSplitIndex < mSplitManager.getNumbers()-1) {
+                mCurrentSplitIndex++;
+                UpdateCurrentSplitView(mCurrentSplitIndex);
+            }
         }
     }
 
     private void onStartButtonClick() {
 
         if (mState == STATE_NORMAL) {
+            DeleteAll();
             doStartRecord();
         } else if (mState == STATE_RECORDING) {
             doStopRecord();
@@ -393,6 +449,11 @@ public class RecordActivity extends SherlockFragmentActivity implements View.OnC
     private void doStartRecord() {
 
 
+        ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_MUSIC,100);
+        tg.startTone(ToneGenerator.TONE_CDMA_ABBR_ALERT,BEEP_DURATIONMS);
+        SystemClock.sleep(BEEP_DURATIONMS - 20);
+        tg.stopTone();
+        tg.release();
 
         mState = STATE_RECORDING ;
         Intent intent = new Intent(this, RecordService.class) ;
@@ -424,6 +485,12 @@ public class RecordActivity extends SherlockFragmentActivity implements View.OnC
 
     }
 
+    private void DeleteAll() {
+        mSplitManager.clear();
+        mCurrentSplitIndex = -1 ;
+        mSplitAdapter.notifyDataSetChanged();
+        UpdateCurrentSplitView(mCurrentSplitIndex);
+    }
 
     private void updateStatus() {
 
@@ -499,6 +566,25 @@ public class RecordActivity extends SherlockFragmentActivity implements View.OnC
 		vModeValName.setVisibility(visable);
 		vModeVal.setVisibility(visable);
 	}
+
+    private void UpdateCurrentSplitView(int index) {
+        if (index >= 0 && index < mSplitManager.getNumbers()) {
+            SplitItem split = mSplitManager.getSplits().get(index) ;
+
+            String  str = String.format("%.2f", split.getTime()/1000.0);
+            textTIME.setText(str) ;
+            str = String.format("%.2f", split.getSplit()/1000.0);
+            textSplit.setText(str) ;
+
+            str = String.format("%d",index + 1) ;
+            textNumber.setText(str) ;
+        } else if (index == -1) {
+            textTIME.setText(R.string.READY);
+            textNumber.setText("");
+            textSplit.setText("");
+        }
+    }
+
 
     @Override
     public void onBackPressed() {

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:custom="http://schemas.android.com/apk/res/com.bangz.shotrecorder">
+    <com.bangz.shotrecorder.SeekBarPreference
+            android:key="ThresholdDB"
+            android:title="@string/threshold_title"
+            android:summary="@string/threshold_summary"
+            custom:MaxValue="96"
+            custom:MinValue="50"
+            android:defaultValue="92"/>
+    <com.bangz.shotrecorder.SeekBarPreference
+            android:key="DelayStart"
+            android:title="@string/delaystart_title"
+            custom:MaxValue="10"
+            android:defaultValue="0"/>
+    <CheckBoxPreference
+            android:key="preventincall"
+            android:title="@string/preventincall_title"
+            android:summary="@string/preventincall_summay"
+            android:defaultValue="true"/>
+</PreferenceScreen>

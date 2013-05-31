@@ -37,5 +37,10 @@
     <string name="str_notify_title">Shot Recorder</string>
     <string name="please_stop_record">Please Stop Record first.</string>
     <string name="READY">READY</string>
+    <string name="preventincall_title">INCALL Prevent</string>
+    <string name="preventincall_summay">prevent coming phone call when recording</string>
+    <string name="threshold_title">Threshold(dB)</string>
+    <string name="threshold_summary">the Threshold dB value</string>
+    <string name="delaystart_title">Delay Start (sec.)</string>
 
 </resources>

@@ -1,3 +1,23 @@
+/**
+ * Copyright (C) 2013 Bangz
+ *
+ * @author Royer Wang
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ *
+ */
+
 package com.bangz.shotrecorder;
 
 import android.app.Notification;
@@ -439,7 +459,9 @@ public class RecordService extends Service {
             int reportpostionsamples = (int)(50 * samplespermillisecond) ;
 
             //TODO ThresholdDB should read from setting.
-            AmplitudeShotDetectAlgorithms asda = new AmplitudeShotDetectAlgorithms(90-96);
+            int thresholdDB = Prefs.getThresholdDB(RecordService.this);
+            AmplitudeShotDetectAlgorithms asda = new AmplitudeShotDetectAlgorithms(thresholdDB-96);
+            Log.d(TAG,"Threshold dB = "+ thresholdDB) ;
 
             ShotDetector detector = new ShotDetector(mSampleRate,channels,asda,mRecordBufferSize / channels + 1) ;
 
