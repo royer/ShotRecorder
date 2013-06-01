@@ -127,6 +127,9 @@ public class SeekBarPreference extends Preference implements SeekBar.OnSeekBarCh
         if (progress < mMin) {
             progress = mMin;
         }
+
+        notifyDependencyChange(progress == mMin);
+
         if (progress != mProgress) {
             mProgress = progress;
 
@@ -158,6 +161,10 @@ public class SeekBarPreference extends Preference implements SeekBar.OnSeekBarCh
         }
     }
 
+    @Override
+    public boolean shouldDisableDependents() {
+        return mProgress == mMin ;
+    }
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {

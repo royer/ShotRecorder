@@ -41,6 +41,10 @@
     <string name="preventincall_summay">prevent coming phone call when recording</string>
     <string name="threshold_title">Threshold(dB)</string>
     <string name="threshold_summary">the Threshold dB value</string>
-    <string name="delaystart_title">Delay Start (sec.)</string>
+    <string name="delaystart_title">Random Delay Start (sec.)</string>
+    <string name="mindelaystart_title">Minimum Delay (%)</string>
+    <string name="mindelaystart_summay">The Minimum delay time(sec.), if the Random Delay Start be set.</string>
+    <string name="maxshot_zero">Shot number can not be zero.</string>
+    <string name="max_par_time_zero">The Par. time can not be zero!</string>
 
 </resources>

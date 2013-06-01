@@ -35,13 +35,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class RecordActivity extends SherlockFragmentActivity implements View.OnClickListener {
+import java.util.Random;
+
+public class RecordActivity extends SherlockFragmentActivity
+        implements SplitListFragment.OnSplitItemSelectedListerner , View.OnClickListener
+{
 	
 	public static final String TAG = "RecorderActivity";
 
@@ -60,6 +65,7 @@ public class RecordActivity extends SherlockFragmentActivity implements View.OnC
 
 
     private int         mCurrentSplitIndex = -1;
+
 
     public static enum MODE { COMSTOCK, VIRGINIA, PAR_TIME }
 
@@ -204,6 +210,10 @@ public class RecordActivity extends SherlockFragmentActivity implements View.OnC
             for(long e : events) {
                 mSplitManager.append(e);
                 mSplitAdapter.notifyDataSetChanged();
+                FragmentManager fm = getSupportFragmentManager() ;
+                SplitListFragment splitfragment = (SplitListFragment)fm.findFragmentById(R.id.splitlist) ;
+                splitfragment.getListView().smoothScrollToPosition(mSplitManager.getNumbers() - 1);
+
                 mbModified = true ;
             }
 
@@ -432,9 +442,18 @@ public class RecordActivity extends SherlockFragmentActivity implements View.OnC
         }
     }
 
+    @Override
+    public void onSplitItemSelected(int position) {
+        mCurrentSplitIndex = position ;
+        UpdateCurrentSplitView(mCurrentSplitIndex);
+    }
+
+
     private void onStartButtonClick() {
 
         if (mState == STATE_NORMAL) {
+            if (isModeReady() == false)
+                return ;
             DeleteAll();
             doStartRecord();
         } else if (mState == STATE_RECORDING) {
@@ -445,9 +464,23 @@ public class RecordActivity extends SherlockFragmentActivity implements View.OnC
     }
 
 
+    private boolean isModeReady() {
+
+        if (mMode == MODE.COMSTOCK) return true;
+        else if (mMode == MODE.VIRGINIA && mMaxShots == 0) {
+            Toast.makeText(this,R.string.maxshot_zero,3000).show();
+            return false;
+        } else if (mMode == MODE.PAR_TIME && mMaxParTime == 0) {
+            Toast.makeText(this,R.string.max_par_time_zero,3000).show();
+            return false;
+        }
+
+        return true;
+    }
 
     private void doStartRecord() {
 
+        doDelayStart();
 
         ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_MUSIC,100);
         tg.startTone(ToneGenerator.TONE_CDMA_ABBR_ALERT,BEEP_DURATIONMS);
@@ -472,6 +505,22 @@ public class RecordActivity extends SherlockFragmentActivity implements View.OnC
         doBindService();
 
         textTIME.setText(R.string.READY);
+    }
+
+    private void doDelayStart() {
+        int maxDelay = Prefs.getDelayStart(this) * 1000;
+        int minDelay = maxDelay * Prefs.getMinDelayStart(this) / 100 ;
+
+
+        Random rand = new Random();
+        int delay = minDelay +
+                ((maxDelay==minDelay)? 0:rand.nextInt(maxDelay - minDelay))
+                - BEEP_DURATIONMS;
+        delay = delay - delay % 1000 ;
+
+        if (delay > 0) {
+            SystemClock.sleep(delay);
+        }
     }
 
     private void doStopRecord() {

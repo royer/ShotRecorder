@@ -8,12 +8,21 @@
             android:summary="@string/threshold_summary"
             custom:MaxValue="96"
             custom:MinValue="50"
-            android:defaultValue="92"/>
+            android:defaultValue="94"/>
     <com.bangz.shotrecorder.SeekBarPreference
             android:key="DelayStart"
             android:title="@string/delaystart_title"
             custom:MaxValue="10"
             android:defaultValue="0"/>
+    <com.bangz.shotrecorder.SeekBarPreference
+            android:key="MinDelay"
+            android:dependency="DelayStart"
+            android:shouldDisableView="true"
+            android:title="@string/mindelaystart_title"
+            android:summary="@string/mindelaystart_summay"
+            custom:MaxValue="100"
+            android:defaultValue="0"
+            />
     <CheckBoxPreference
             android:key="preventincall"
             android:title="@string/preventincall_title"

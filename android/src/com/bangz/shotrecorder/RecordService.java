@@ -481,15 +481,34 @@ public class RecordService extends Service {
                 //TODO: save to temp file.
 
                 Long[] shotevent = detector.doDetect(readbuffer, mSampleRate, channels, mEncoding);
+                Long[] acturycopy = null;
 
                 if (shotevent.length > 0) {
-                    AddNewEvents(shotevent) ;
+                    int needadd = 0;
+                    if (mMode == MODE_VIRGINIA) {
+                        needadd = Math.min(shotevent.length, mMaxShot - mShotEvents.size());
+                    } else {
+                        needadd = shotevent.length;
+                    }
+                    acturycopy = new Long[needadd] ;
+                    System.arraycopy(shotevent,0,acturycopy,0,needadd);
+                    AddNewEvents(acturycopy) ;
                 }
 
                 if ((mSamples - lastreportpostion) > reportpostionsamples) {
                     //report current postion(millisecond)
                     NotifyCurrentPostion((int)(mSamples / samplespermillisecond)) ;
                     lastreportpostion = mSamples ;
+                }
+
+                if (mMode == MODE_VIRGINIA && mShotEvents.size() == mMaxShot) {
+                    updateStatus(STATUS_STOPPED,STOPPED_MAXSHOT);
+                    break;
+                }
+
+                if (mMode == MODE_PARTIME && mSamples >= mParTime * samplespermillisecond) {
+                    updateStatus(STATUS_STOPPED, STOPPED_MAXPARTIME) ;
+                    break;
                 }
 
                 if (mSamples >= mMaxRecordTime * 1000 * samplespermillisecond) {

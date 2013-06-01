@@ -23,24 +23,39 @@ package com.bangz.shotrecorder;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceManager;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 
+import static android.preference.Preference.OnPreferenceChangeListener;
+
 /**
  * Created by royer on 30/05/13.
  */
-public class Prefs extends SherlockPreferenceActivity {
+public class Prefs extends SherlockPreferenceActivity  {
 
     private static final String OPT_THRESHOLD = "ThresholdDB" ;
+    private static final String OPT_DELAYSTART = "DelayStart" ;
+    private static final String OPT_MINDELAY = "MinDelay";
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         addPreferencesFromResource(R.xml.preferences);
+
     }
 
     public static int getThresholdDB(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context).getInt(OPT_THRESHOLD,94);
     }
+
+    public static int getDelayStart(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getInt(OPT_DELAYSTART,0);
+    }
+
+    public static int getMinDelayStart(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getInt(OPT_MINDELAY,0);
+    }
+
 }

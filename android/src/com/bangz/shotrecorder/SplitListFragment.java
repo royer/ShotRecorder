@@ -36,9 +36,12 @@ import com.actionbarsherlock.app.SherlockListFragment;
 public class SplitListFragment extends SherlockListFragment {
 
 	public static final String TAG = "SplitListFragment" ;
-	
-	//public View	mHeader ;
-	
+
+    public interface OnSplitItemSelectedListerner {
+        public void onSplitItemSelected(int position) ;
+    }
+
+    OnSplitItemSelectedListerner    mListener ;
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -48,6 +51,13 @@ public class SplitListFragment extends SherlockListFragment {
 	public void onAttach(Activity activity) {
 		Log.d(TAG,"onAttach");
 		super.onAttach(activity);
+
+        try {
+            mListener = (OnSplitItemSelectedListerner)activity;
+        }catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnSplitItemSelectedListener");
+        }
 	}
 
 	@Override
@@ -88,6 +98,8 @@ public class SplitListFragment extends SherlockListFragment {
 		super.onListItemClick(l, v, position, id);
 		
 		Log.d(TAG,"position = " + position + "id = " + id);
+
+        mListener.onSplitItemSelected(position);
 	}
 
 	
