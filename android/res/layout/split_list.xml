@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dslv="http://schemas.android.com/apk/res/com.bangz.shotrecorder"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -14,14 +15,19 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="2dp"
 	    android:background="@android:drawable/divider_horizontal_dark"/>    
-    <ListView
+    <com.mobeta.android.dslv.DragSortListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:headerDividersEnabled="true" >
+        android:headerDividersEnabled="true"
+        dslv:drag_enabled="true"
+        dslv:sort_enabled="false"
+        dslv:drag_start_mode="onLongPress"
+        dslv:remove_enabled="true"
+        dslv:remove_mode="flingRemove"
+        />
 
-    </ListView>
 
     <ImageView
         android:id="@android:id/empty"

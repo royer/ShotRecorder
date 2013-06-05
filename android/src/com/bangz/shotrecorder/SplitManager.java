@@ -20,11 +20,11 @@
 
 package com.bangz.shotrecorder;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class SplitManager implements Parcelable {
 
@@ -73,7 +73,13 @@ public class SplitManager implements Parcelable {
 		if (position < (Splits.size() - 1)) {
 			
 			SplitItem next = Splits.get(position + 1) ;
-			long splittime = position == 0 ? 0 : next.getTime() - sitem.getTime() ;
+            long splittime = 0;
+            if (position == 0)
+			    splittime = 0 ;
+            else {
+                SplitItem prev = Splits.get(position - 1) ;
+                splittime = next.getTime() - prev.getTime() ;
+            }
 			
 			next.setSplit(splittime) ;
 		}

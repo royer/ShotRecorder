@@ -17,6 +17,7 @@
         android:paddingLeft="5dp"
         android:paddingRight="5dp" />
     
+    
     <TextView
         android:id="@+id/colSplit"
         android:layout_width="0dp"

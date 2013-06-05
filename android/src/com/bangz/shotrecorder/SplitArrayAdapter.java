@@ -20,14 +20,15 @@
 
 package com.bangz.shotrecorder;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class SplitArrayAdapter extends ArrayAdapter<SplitItem> {
 	
@@ -64,7 +65,8 @@ public class SplitArrayAdapter extends ArrayAdapter<SplitItem> {
 		if (convertView == null) {
 			
 			convertView = this.mInflater.inflate(R.layout.split_list_entry, null) ;
-			
+			//convertView.setLayoutParams(new LinearLayout.LayoutParams(
+            //        ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 			viewHolder = new ViewHolder() ;
 			
 			viewHolder.Number = (TextView)convertView.findViewById(R.id.colNumber) ;

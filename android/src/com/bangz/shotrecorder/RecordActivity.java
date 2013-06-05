@@ -29,7 +29,13 @@ import android.graphics.Typeface;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
-import android.os.*;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
+import android.os.SystemClock;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
@@ -446,6 +452,19 @@ public class RecordActivity extends SherlockFragmentActivity
     public void onSplitItemSelected(int position) {
         mCurrentSplitIndex = position ;
         UpdateCurrentSplitView(mCurrentSplitIndex);
+    }
+
+    @Override
+    public void onSplitItemRemoved(int position) {
+
+        mbModified = true;
+        mSplitManager.remove(position) ;
+        mSplitAdapter.notifyDataSetChanged();
+        if(mCurrentSplitIndex >= mSplitManager.getNumbers()) {
+            mCurrentSplitIndex = mSplitManager.getNumbers() - 1 ;
+        }
+
+        this.UpdateCurrentSplitView(mCurrentSplitIndex);
     }
 
 

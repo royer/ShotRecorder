@@ -20,15 +20,11 @@
 
 package com.bangz.shotrecorder;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
-
-import static android.preference.Preference.OnPreferenceChangeListener;
 
 /**
  * Created by royer on 30/05/13.

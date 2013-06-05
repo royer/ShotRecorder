@@ -27,24 +27,30 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
+import com.mobeta.android.dslv.DragSortListView;
 
-public class SplitListFragment extends SherlockListFragment {
+public class SplitListFragment extends SherlockListFragment implements
+    DragSortListView.RemoveListener{
 
 	public static final String TAG = "SplitListFragment" ;
 
+
     public interface OnSplitItemSelectedListerner {
         public void onSplitItemSelected(int position) ;
+        public void onSplitItemRemoved(int position) ;
     }
 
     OnSplitItemSelectedListerner    mListener ;
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+
+        DragSortListView lv = (DragSortListView)getListView();
+        lv.setRemoveListener(this);
 	}
 
 	@Override
@@ -99,9 +105,17 @@ public class SplitListFragment extends SherlockListFragment {
 		
 		Log.d(TAG,"position = " + position + "id = " + id);
 
-        mListener.onSplitItemSelected(position);
+        if(mListener != null)
+            mListener.onSplitItemSelected(position);
 	}
 
-	
+
+    @Override
+    public void remove(int which) {
+
+        if (mListener != null) {
+            mListener.onSplitItemRemoved(which);
+        }
+    }
 
 }
