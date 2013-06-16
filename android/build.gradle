@@ -18,6 +18,8 @@ android {
     defaultConfig {
         minSdkVersion 7
         targetSdkVersion 17
+        testPackageName "com.bangz.shotrecorder.test"
+        testInstrumentationRunner "android.test.InstrumentationTestRunner"
     }
     sourceSets {
         main {
@@ -30,6 +32,6 @@ android {
             assets.srcDirs = ['assets']
         }
 
-        instrumentTest.setRoot('tests')
+        instrumentTest.setRoot('ShotRecorderTestTest')
     }
 }

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:layout_gravity="bottom">
+        <TextView android:id="@+id/txtDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2013-06-01 13:23"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+        <TextView android:id="@+id/txtDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description"
+                android:lines="2"
+                android:maxLines="3"
+                android:textColor="@color/gray"
+                android:textSize="12sp"/>
+    </LinearLayout>
+
+    <RelativeLayout
+            android:orientation="vertical"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtTimeLabel"
+                android:text="@string/timelabelname"
+                android:layout_alignParentTop="true"
+                android:layout_alignStart="@+id/txtTime"
+                android:textSize = "18sp"
+                android:textStyle="bold"
+                android:layout_toLeftOf="@+id/txtTime"
+                android:layout_alignBaseline="@+id/txtTime"/>
+
+        <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="16.34"
+                android:textSize = "24sp"
+                android:id="@+id/txtTime"
+                android:textStyle="bold"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="7dp"
+                />
+
+        <TextView
+                android:id="@+id/txtNumberLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/numberlabelwithdegree"
+                android:textSize = "18sp"
+                android:textStyle="bold"
+                android:layout_alignBaseline="@+id/txtNumber"
+                android:layout_below="@+id/txtTimeLabel"
+                android:layout_toLeftOf="@+id/txtNumber"/>
+
+        <TextView
+                android:id="@+id/txtNumber"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:textSize = "24sp"
+                android:text="8"
+                android:textStyle="bold"
+                android:layout_below="@+id/txtTime"
+                android:layout_marginLeft="7dp"
+                />
+    </RelativeLayout>
+</LinearLayout>

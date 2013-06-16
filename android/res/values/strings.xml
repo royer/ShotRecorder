@@ -46,5 +46,9 @@
     <string name="mindelaystart_summay">The Minimum delay time(sec.), if the Random Delay Start be set.</string>
     <string name="maxshot_zero">Shot number can not be zero.</string>
     <string name="max_par_time_zero">The Par. time can not be zero!</string>
+    <string name="numberlabelwithdegree">"N\u00B0"</string>
+    <string name="descriptlabel">Descript:</string>
+    <string name="descript">Description</string>
+    <string name="asksaverecord">Do you want save this shot recorder?</string>
 
 </resources>

@@ -22,7 +22,9 @@ package com.bangz.shotrecorder;
 
 import android.app.AlertDialog;
 import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Typeface;
@@ -37,6 +39,7 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.os.SystemClock;
 import android.support.v4.app.FragmentManager;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -51,7 +54,8 @@ import com.actionbarsherlock.view.MenuItem;
 import java.util.Random;
 
 public class RecordActivity extends SherlockFragmentActivity
-        implements SplitListFragment.OnSplitItemSelectedListerner , View.OnClickListener
+        implements SplitListFragment.OnSplitItemSelectedListerner , View.OnClickListener ,
+                    GetDescriptDialogFragment.DescriptDialogListener
 {
 	
 	public static final String TAG = "RecorderActivity";
@@ -71,6 +75,7 @@ public class RecordActivity extends SherlockFragmentActivity
 
 
     private int         mCurrentSplitIndex = -1;
+
 
 
     public static enum MODE { COMSTOCK, VIRGINIA, PAR_TIME }
@@ -657,8 +662,33 @@ public class RecordActivity extends SherlockFragmentActivity
     @Override
     public void onBackPressed() {
 
-        if (mState == STATE_NORMAL)
-            super.onBackPressed();
+        if (mState == STATE_NORMAL) {
+            if (mbModified == false)
+                super.onBackPressed();
+            else {
+
+                // ask weather to save this record
+                new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle(android.R.string.dialog_alert_title)
+                        .setMessage(getString(R.string.asksaverecord))
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                GetDescriptDialogFragment d = new GetDescriptDialogFragment();
+                                d.show(getSupportFragmentManager(),"getDescriptDialogFragment");
+                                dialog.dismiss();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mbModified = false ;
+                                finish();
+                            }
+                        })
+                        .show();
+            }
+        }
         else {
             new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
                     .setTitle(android.R.string.dialog_alert_title)
@@ -666,6 +696,31 @@ public class RecordActivity extends SherlockFragmentActivity
                     .setPositiveButton(android.R.string.ok,null)
                     .show();
         }
+    }
+
+    @Override
+    public void onGetDescription(GetDescriptDialogFragment dialog, String descript) {
+
+        saveToDatabaseAndFinish(descript);
+    }
+
+
+    private void saveToDatabaseAndFinish(String descript) {
+
+        if (mSplitManager.getNumbers() > 0 ) {
+            Log.d(TAG,"save to Database. descript = " + descript) ;
+            ContentValues contentValues = new ContentValues() ;
+
+            contentValues.put(ShotRecord.ShotRecords.COLUMN_NAME_DESCRIPTION,descript);
+            contentValues.put(ShotRecord.ShotRecords.COLUMN_NAME_SHOTS,mSplitManager.getNumbers());
+            contentValues.put(ShotRecord.ShotRecords.COLUMN_NAME_SPENDTIME,mSplitManager.
+                    getSplits().get(mSplitManager.getNumbers()-1).getTime());
+            contentValues.put(ShotRecord.ShotRecords.COLUMN_NAME_SPLITS,mSplitManager.toJSONString());
+
+            getContentResolver().insert(ShotRecord.ShotRecords.CONTENT_URI,contentValues);
+        }
+        mbModified = false ;
+        finish();
     }
 
     private Button  btnStart ;
