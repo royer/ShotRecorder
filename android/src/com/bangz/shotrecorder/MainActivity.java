@@ -25,11 +25,14 @@ import android.content.Intent;
 import android.support.v4.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v4.content.CursorLoader ;
 import android.support.v4.app.LoaderManager;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -37,7 +40,8 @@ import com.actionbarsherlock.view.Menu;
 import com.mobeta.android.dslv.DragSortListView;
 
 public class MainActivity extends SherlockFragmentActivity implements
-View.OnClickListener, LoaderManager.LoaderCallbacks<Cursor> {
+View.OnClickListener, LoaderManager.LoaderCallbacks<Cursor>,
+        AdapterView.OnItemClickListener{
 
     private static final String TAG = "MainActivity";
 
@@ -94,6 +98,7 @@ View.OnClickListener, LoaderManager.LoaderCallbacks<Cursor> {
 
         DragSortListView listView = (DragSortListView)findViewById(R.id.listRecords);
         listView.setAdapter(mAdapter);
+        listView.setOnItemClickListener(this);
 
         LoaderManager lm = getSupportLoaderManager();
         lm.initLoader(1, null, this);
@@ -125,6 +130,13 @@ View.OnClickListener, LoaderManager.LoaderCallbacks<Cursor> {
 	}
 
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.d(TAG,"ON Item Click position = "+position + "; id = "+id);
+    }
+
+
+
     private static final String[] PROJECTION = new String[] {
             ShotRecord.ShotRecords._ID,
             ShotRecord.ShotRecords.COLUMN_NAME_DATE,
@@ -148,7 +160,6 @@ View.OnClickListener, LoaderManager.LoaderCallbacks<Cursor> {
     public void onLoaderReset(android.support.v4.content.Loader<Cursor> cursorLoader) {
         mAdapter.swapCursor(null);
     }
-
 
 
 }

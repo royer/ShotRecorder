@@ -23,9 +23,4 @@
             custom:MaxValue="100"
             android:defaultValue="0"
             />
-    <CheckBoxPreference
-            android:key="preventincall"
-            android:title="@string/preventincall_title"
-            android:summary="@string/preventincall_summay"
-            android:defaultValue="true"/>
 </PreferenceScreen>

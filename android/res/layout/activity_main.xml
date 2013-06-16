@@ -14,9 +14,9 @@
         dslv:drag_enabled="true"
         dslv:sort_enabled="false"
         dslv:remove_enabled="true"
-        dslv:remove_mode="flingRemove">
+        dslv:drag_start_mode="onLongPress"
+        dslv:remove_mode="flingRemove" />
 
-    </com.mobeta.android.dslv.DragSortListView>
     <Button
         android:id="@+id/startRecorderActivity"
         android:layout_width="wrap_content"

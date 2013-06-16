@@ -36,50 +36,52 @@
             android:layout_gravity="right">
 
         <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/txtTimeLabel"
-                android:text="@string/timelabelname"
-                android:layout_alignParentTop="true"
-                android:layout_alignStart="@+id/txtTime"
-                android:textSize = "18sp"
-                android:textStyle="bold"
-                android:layout_toLeftOf="@+id/txtTime"
-                android:layout_alignBaseline="@+id/txtTime"/>
-
-        <TextView
+                android:id="@+id/txtNumber"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:text="16.34"
+                android:text="8"
                 android:textSize = "24sp"
-                android:id="@+id/txtTime"
                 android:textStyle="bold"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginLeft="7dp"
-                />
+                android:gravity="center_horizontal"/>
 
         <TextView
                 android:id="@+id/txtNumberLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/numberlabelwithdegree"
+                android:layout_alignParentTop="true"
+                android:layout_alignStart="@id/txtNumber"
                 android:textSize = "18sp"
                 android:textStyle="bold"
-                android:layout_alignBaseline="@+id/txtNumber"
-                android:layout_below="@+id/txtTimeLabel"
-                android:layout_toLeftOf="@+id/txtNumber"/>
+                android:layout_toLeftOf="@+id/txtNumber"
+                android:layout_alignBaseline="@+id/txtNumber"/>
+
 
         <TextView
-                android:id="@+id/txtNumber"
+                android:id="@+id/txtTime"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:textSize = "24sp"
-                android:text="8"
+                android:text="12.43"
                 android:textStyle="bold"
-                android:layout_below="@+id/txtTime"
+                android:layout_below="@+id/txtNumber"
                 android:layout_marginLeft="7dp"
-                />
+                android:gravity="center_horizontal"/>
+        <TextView
+                android:id="@+id/txtTimeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/timelabelname"
+                android:textSize = "18sp"
+                android:textStyle="bold"
+                android:layout_alignBaseline="@+id/txtTime"
+                android:layout_toLeftOf="@id/txtTime"
+                android:layout_below="@+id/txtNumberLabel"
+                android:layout_alignRight="@+id/txtNumberLabel"/>
+
     </RelativeLayout>
 </LinearLayout>
