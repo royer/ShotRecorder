@@ -27,6 +27,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.EditText;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
@@ -39,6 +40,18 @@ public class GetDescriptDialogFragment extends SherlockDialogFragment {
     public interface DescriptDialogListener {
         public void onGetDescription(GetDescriptDialogFragment dialog, String descript);
     }
+
+
+    static GetDescriptDialogFragment newInstance(String strdescript) {
+        GetDescriptDialogFragment d = new GetDescriptDialogFragment() ;
+
+        Bundle args = new Bundle() ;
+        args.putString("descript", strdescript) ;
+        d.setArguments(args);
+
+        return d;
+    }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
@@ -46,7 +59,12 @@ public class GetDescriptDialogFragment extends SherlockDialogFragment {
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        builder.setView(inflater.inflate(R.layout.dialog_getdescription, null))
+        View v = inflater.inflate(R.layout.dialog_getdescription, null) ;
+
+        String strDescript = getArguments().getString("descript") ;
+        EditText editText = (EditText)v.findViewById(R.id.txtDescription);
+        editText.setText(strDescript) ;
+        builder.setView(v)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 
                     @Override
@@ -71,6 +89,7 @@ public class GetDescriptDialogFragment extends SherlockDialogFragment {
 
         return builder.create();
     }
+
 
     private DescriptDialogListener mListener ;
 

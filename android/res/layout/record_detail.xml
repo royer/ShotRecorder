@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:layout_gravity="left"
+                android:layout_weight="0.7">
+            <View
+                    android:id="@+id/center"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_centerInParent="true"/>
+            <TextView
+                    android:id="@+id/txtnumberlabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/medal_font_style"
+                    android:text="@string/numberlabelwithdegree"
+                    android:layout_alignParentTop="true"
+                    android:layout_toLeftOf="@+id/center"
+                    android:layout_marginRight="5dp"
+                    />
+            <TextView
+                    android:id="@+id/txtNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/medal_font_style"
+                    android:text="6"
+                    android:layout_alignParentTop="true"
+                    android:layout_toRightOf="@+id/center"
+                    android:layout_alignBaseline="@+id/txtnumberlabel"/>
+            <TextView
+                    android:id="@+id/txtTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12.43"
+                    style="@style/medal_font_style"
+                    android:layout_below="@+id/txtNumber"
+                    android:layout_toRightOf="@+id/center"
+                    />
+            <TextView
+                    android:id="@+id/txtTimeLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/timelabelname"
+                    style="@style/medal_font_style"
+                    android:layout_marginRight="5dp"
+                    android:layout_alignBaseline="@+id/txtTime"
+                    android:layout_toLeftOf="@+id/txtTime"
+                    />
+
+        </RelativeLayout>
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:layout_marginLeft="5dp">
+
+            <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                <TextView android:id="@+id/txtDescription"
+                          android:layout_width="fill_parent"
+                          android:layout_height="wrap_content"
+                          android:text="Description"
+                          android:lines="2"
+                          android:maxLines="3"
+                          android:textSize="16sp"
+                          android:layout_weight="1"
+                          android:layout_gravity="top"/>
+
+                <ImageView
+                        android:id="@+id/imgEditDescript"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@android:drawable/ic_menu_edit"
+                        android:layout_gravity="center_vertical"/>
+            </LinearLayout>
+
+            <TextView android:id="@+id/txtDate"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="2013-06-01 13:23"
+                      android:textSize="10sp"
+                      android:textColor="@color/gray"
+                      android:layout_gravity="bottom"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <fragment android:name="com.bangz.shotrecorder.SplitListFragment"
+              android:id="@+id/splitlist"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_weight="1"
+              tools:layout="@layout/split_list"/>
+
+</LinearLayout>

@@ -22,8 +22,11 @@ package com.bangz.shotrecorder;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,6 +52,14 @@ public class SplitManager implements Parcelable {
 		
 		Splits.clear() ;
 	}
+
+    static SplitManager newInstance(String jsonstring) {
+
+        SplitManager s = new SplitManager() ;
+        s.rebuildFromJSONString(jsonstring) ;
+
+        return  s;
+    }
 	
 	/**
 	 * 
@@ -113,6 +124,26 @@ public class SplitManager implements Parcelable {
 
         return jsonArray.toString();
 
+    }
+
+    public SplitManager rebuildFromJSONString(String string) {
+
+
+        clear();
+
+        int i = 0;
+
+        try {
+            JSONArray jsonArray = new JSONArray(string) ;
+            while(true) {
+                long t = jsonArray.getLong(i++);
+                append(t);
+            }
+
+        } catch(JSONException e) {
+        }
+
+        return this ;
     }
 	
 	@Override

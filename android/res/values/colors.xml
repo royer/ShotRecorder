@@ -3,4 +3,7 @@
     <color name="lightblue">#33B5E5</color>
     <color name="black10x">#101010</color>
     <color name="gray">#808080</color>
+    <color name="metal_back">#4561ef</color>
+    <color name="metal_font">#f2833a</color>
+    <color name="record_list_text">#136bcc</color>
 </resources>

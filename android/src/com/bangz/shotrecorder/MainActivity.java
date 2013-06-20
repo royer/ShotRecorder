@@ -20,8 +20,10 @@
 
 package com.bangz.shotrecorder;
 
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -50,6 +52,13 @@ View.OnClickListener, LoaderManager.LoaderCallbacks<Cursor>,
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent() ;
+
+        if (intent.getData() == null) {
+            intent.setData(ShotRecord.ShotRecords.CONTENT_URI);
+        }
+
 		setContentView(R.layout.activity_main);
 		
 		Button	button = (Button)findViewById(R.id.startRecorderActivity);
@@ -92,7 +101,7 @@ View.OnClickListener, LoaderManager.LoaderCallbacks<Cursor>,
                 v.setText(String.format("%d",shots));
 
                 v = (TextView)view.findViewById(R.id.txtTime);
-                v.setText(String.format("%.02f\"",spendtime/1000.0));
+                v.setText(String.format("%.02f",spendtime/1000.0));
             }
         };
 
@@ -132,7 +141,11 @@ View.OnClickListener, LoaderManager.LoaderCallbacks<Cursor>,
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.d(TAG,"ON Item Click position = "+position + "; id = "+id);
+
+        Uri uri = ContentUris.withAppendedId(ShotRecord.ShotRecords.CONTENT_URI,id);
+        Intent intent = new Intent(Intent.ACTION_EDIT, uri);
+        startActivity(intent);
+
     }
 
 
@@ -148,7 +161,7 @@ View.OnClickListener, LoaderManager.LoaderCallbacks<Cursor>,
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String select = new String();
-        return new CursorLoader(this, ShotRecord.ShotRecords.CONTENT_URI,PROJECTION,select, null, null);
+        return new CursorLoader(this, getIntent().getData(),PROJECTION,select, null, null);
     }
 
     @Override

@@ -136,7 +136,15 @@ public class ShotRecordProvider extends ContentProvider {
 
     @Override
     public String getType(Uri uri) {
-        throw new UnsupportedOperationException();
+
+        switch(sUriMatcher.match(uri)) {
+            case MATCH_RECORDS:
+                return ShotRecord.ShotRecords.CONTENT_TYPE ;
+            case MATCH_ONE_RECORD:
+                return ShotRecord.ShotRecords.CONTENT_ITEM_TYPE ;
+            default:
+                throw new IllegalArgumentException("Unknown URI: " + uri);
+        }
     }
 
     @Override

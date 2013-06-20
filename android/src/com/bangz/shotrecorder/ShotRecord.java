@@ -84,6 +84,11 @@ public final class ShotRecord {
                 = Uri.parse(SCHEME + AUTHORITY + PATH_RECORD_ID + "/#") ;
 
 
+        public static final String CONTENT_TYPE =
+                "vnd.android.cursor.dir/vnd.bangz.shotrecorder";
+        public static final String CONTENT_ITEM_TYPE =
+                "vnd.android.cursor.item/vnd.bangz.shotrecorder";
+
         /*
          * Columns definitions
          */

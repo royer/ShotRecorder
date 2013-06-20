@@ -3,85 +3,89 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp">
-
-    <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:layout_weight="1"
-            android:layout_gravity="bottom">
-        <TextView android:id="@+id/txtDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2013-06-01 13:23"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
-        <TextView android:id="@+id/txtDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Description"
-                android:lines="2"
-                android:maxLines="3"
-                android:textColor="@color/gray"
-                android:textSize="12sp"/>
-    </LinearLayout>
+        android:padding="5dp"
+        >
 
     <RelativeLayout
             android:orientation="vertical"
-            android:layout_width="140dp"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="right">
+            android:layout_gravity="right"
+            android:layout_weight="0.7">
+
+        <View
+            android:id="@+id/center"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_centerInParent="true"/>
 
         <TextView
                 android:id="@+id/txtNumber"
-                android:layout_width="80dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="8"
-                android:textSize = "24sp"
-                android:textStyle="bold"
+                style="@style/medal_font_style"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginLeft="7dp"
-                android:gravity="center_horizontal"/>
+                android:layout_toRightOf="@+id/center"
+                />
 
         <TextView
                 android:id="@+id/txtNumberLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/numberlabelwithdegree"
-                android:layout_alignParentTop="true"
-                android:layout_alignStart="@id/txtNumber"
-                android:textSize = "18sp"
-                android:textStyle="bold"
-                android:layout_toLeftOf="@+id/txtNumber"
-                android:layout_alignBaseline="@+id/txtNumber"/>
+                style="@style/medal_font_style"
+                android:layout_marginRight="5dp"
+                android:layout_alignBaseline="@+id/txtNumber"
+                android:layout_toLeftOf="@+id/txtNumber"/>
 
 
         <TextView
                 android:id="@+id/txtTime"
-                android:layout_width="80dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:textSize = "24sp"
                 android:text="12.43"
-                android:textStyle="bold"
+                style="@style/medal_font_style"
                 android:layout_below="@+id/txtNumber"
-                android:layout_marginLeft="7dp"
-                android:gravity="center_horizontal"/>
+                android:layout_toRightOf="@+id/center"
+                />
         <TextView
                 android:id="@+id/txtTimeLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/timelabelname"
-                android:textSize = "18sp"
-                android:textStyle="bold"
+                style="@style/medal_font_style"
+                android:layout_marginRight="5dp"
                 android:layout_alignBaseline="@+id/txtTime"
-                android:layout_toLeftOf="@id/txtTime"
-                android:layout_below="@+id/txtNumberLabel"
-                android:layout_alignRight="@+id/txtNumberLabel"/>
+                android:layout_toLeftOf="@+id/txtTime"
+                />
 
     </RelativeLayout>
+
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.3"
+            android:layout_marginLeft="5dp">
+        <TextView android:id="@+id/txtDescription"
+                  android:layout_width="fill_parent"
+                  android:layout_height="fill_parent"
+                  android:text="Description"
+                  android:lines="2"
+                  android:maxLines="3"
+                  android:textSize="16sp"
+                  android:layout_weight="1"
+                  android:layout_gravity="top"/>
+
+        <TextView android:id="@+id/txtDate"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="2013-06-01 13:23"
+                  android:textSize="10sp"
+                  android:textColor="@color/gray"
+                  android:layout_gravity="bottom"/>
+    </LinearLayout>
+
 </LinearLayout>
