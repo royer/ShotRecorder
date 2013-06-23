@@ -50,5 +50,8 @@
     <string name="descriptlabel">Descript:</string>
     <string name="descript">Description</string>
     <string name="asksaverecord">Do you want save this shot recorder?</string>
+    <string name="nohistoryrecords">No history records. Click \'Start Recorder\' to start.</string>
+    <string name="share">Share</string>
+    <string name="share_content" formatted="false">"My Shot Record: %s\n\t SHOTS:\t %s\n\t TIME:\t %s(sec)\n\t Date:\t %s"</string>
 
 </resources>

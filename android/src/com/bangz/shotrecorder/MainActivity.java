@@ -28,22 +28,27 @@ import android.support.v4.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v4.content.CursorLoader ;
 import android.support.v4.app.LoaderManager;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.mobeta.android.dslv.DragSortListView;
 
 public class MainActivity extends SherlockFragmentActivity implements
 View.OnClickListener, LoaderManager.LoaderCallbacks<Cursor>,
-        AdapterView.OnItemClickListener{
+AdapterView.OnItemClickListener,
+DragSortListView.RemoveListener {
 
     private static final String TAG = "MainActivity";
 
@@ -105,9 +110,18 @@ View.OnClickListener, LoaderManager.LoaderCallbacks<Cursor>,
             }
         };
 
+
+
+
+        TextView emptyView = (TextView)findViewById(R.id.empty) ;
+
         DragSortListView listView = (DragSortListView)findViewById(R.id.listRecords);
+
+        listView.setEmptyView(emptyView);
+
         listView.setAdapter(mAdapter);
         listView.setOnItemClickListener(this);
+        listView.setRemoveListener(this);
 
         LoaderManager lm = getSupportLoaderManager();
         lm.initLoader(1, null, this);
@@ -175,4 +189,15 @@ View.OnClickListener, LoaderManager.LoaderCallbacks<Cursor>,
     }
 
 
+    @Override
+    public void remove(int which) {
+
+        DragSortListView listView = (DragSortListView)findViewById(R.id.listRecords);
+
+        long id = listView.getItemIdAtPosition(which) ;
+
+        Uri uri = ContentUris.withAppendedId(getIntent().getData(),id);
+        getContentResolver().delete(uri,null,null);
+
+    }
 }

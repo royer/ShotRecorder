@@ -17,6 +17,14 @@
         dslv:drag_start_mode="onLongPress"
         dslv:remove_mode="flingRemove" />
 
+    <TextView
+        android:id="@+id/empty"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:text="@string/nohistoryrecords"
+        android:gravity="center_horizontal|bottom"
+        android:layout_weight="1"/>
+
     <Button
         android:id="@+id/startRecorderActivity"
         android:layout_width="wrap_content"

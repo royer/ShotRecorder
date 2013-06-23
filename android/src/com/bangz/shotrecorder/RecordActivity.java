@@ -50,7 +50,10 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.ShareActionProvider;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 public class RecordActivity extends SherlockFragmentActivity
@@ -72,6 +75,9 @@ public class RecordActivity extends SherlockFragmentActivity
 	private int			mState ;
 
     private boolean     mbModified = false ;
+
+    private ShareActionProvider mShareActionProvider ;
+
 
 
     private int         mCurrentSplitIndex = -1;
@@ -230,6 +236,8 @@ public class RecordActivity extends SherlockFragmentActivity
 
             mCurrentSplitIndex = mSplitManager.getNumbers() - 1;
             UpdateCurrentSplitView(mCurrentSplitIndex) ;
+
+            SetShareIntent();
         }
     }
 
@@ -318,7 +326,23 @@ public class RecordActivity extends SherlockFragmentActivity
 
         MenuInflater inflater = getSupportMenuInflater();
         inflater.inflate(R.menu.recorder,menu);
+
+        MenuItem shareitem = menu.findItem(R.id.menu_item_share);
+
+        mShareActionProvider = (ShareActionProvider)shareitem.getActionProvider();
+
         return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        //return super.onPrepareOptionsMenu(menu);
+
+        boolean b = mSplitManager.getNumbers() > 0 ;
+        menu.findItem(R.id.menu_item_share).setEnabled(b);
+        if (b)
+            SetShareIntent();
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -333,6 +357,33 @@ public class RecordActivity extends SherlockFragmentActivity
         }
 
         return true;
+    }
+
+    private void SetShareIntent() {
+
+        if (mShareActionProvider == null) return ;
+
+        if (mSplitManager.getNumbers() > 0 ) {
+            String strDescription = "";
+            String strNumber = textNumber.getText().toString();
+            String strTime = String.format("%.02f", mSplitManager.getTotalElapsedTime()/1000.0f);
+
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = new Date();
+            String strDate = df.format(date) ;
+
+            String strcontent = String.format(getResources().getString(R.string.share_content),
+                    strDescription,
+                    strNumber,strTime,strDate) ;
+
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+
+            intent.putExtra(Intent.EXTRA_TEXT, strcontent);
+            mShareActionProvider.setShareIntent(intent);
+        } else {
+            mShareActionProvider.setShareIntent(null);
+        }
     }
 
     @Override
@@ -469,7 +520,9 @@ public class RecordActivity extends SherlockFragmentActivity
             mCurrentSplitIndex = mSplitManager.getNumbers() - 1 ;
         }
 
-        this.UpdateCurrentSplitView(mCurrentSplitIndex);
+        UpdateCurrentSplitView(mCurrentSplitIndex);
+        SetShareIntent();
+
     }
 
 
@@ -674,7 +727,7 @@ public class RecordActivity extends SherlockFragmentActivity
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                GetDescriptDialogFragment d = new GetDescriptDialogFragment();
+                                GetDescriptDialogFragment d = GetDescriptDialogFragment.newInstance("");
                                 d.show(getSupportFragmentManager(),"getDescriptDialogFragment");
                                 dialog.dismiss();
                             }

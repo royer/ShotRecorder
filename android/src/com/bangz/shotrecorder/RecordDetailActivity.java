@@ -37,6 +37,9 @@ import android.widget.TextView;
 
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.ShareActionProvider;
 
 /**
  * Created by royer on 18/06/13.
@@ -50,6 +53,9 @@ implements SplitListFragment.OnSplitItemSelectedListerner,
     private static final String TAG = "RecordDetailActivity" ;
 
     private Uri mUri ;
+
+
+    private ShareActionProvider mShareActionProvider ;
 
 
     private Cursor mCursor ;
@@ -90,12 +96,88 @@ implements SplitListFragment.OnSplitItemSelectedListerner,
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //return super.onCreateOptionsMenu(menu);
+
+        getSupportMenuInflater().inflate(R.menu.detailactivity, menu);
+
+        MenuItem shareitem = menu.findItem(R.id.menu_item_share);
+
+        mShareActionProvider = (ShareActionProvider) shareitem.getActionProvider();
+        //mShareActionProvider.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
+
+
+        return true ;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        menu.findItem(R.id.menu_item_share).setEnabled(mManager.getNumbers() > 0) ;
+
+        setShareIntent();
+
+        return true ;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+
+    }
+
+    private void setShareIntent() {
+
+        if (mShareActionProvider != null) {
+
+            final TextView viewNumber = (TextView)findViewById(R.id.txtNumber);
+            String strnumber = viewNumber.getText().toString();
+
+            final TextView viewTime = (TextView)findViewById(R.id.txtTime) ;
+            String strTime = viewTime.getText().toString();
+
+            final TextView viewDate = (TextView)findViewById(R.id.txtDate);
+            String strDate = viewDate.getText().toString();
+
+            final TextView viewdescription = (TextView)findViewById(R.id.txtDescription);
+            String strDescription = viewdescription.getText().toString();
+
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            String strcontent = String.format(
+                    getResources().getString(R.string.share_content),
+                    strDescription,
+                    strnumber,strTime, strDate);
+            intent.putExtra(Intent.EXTRA_TEXT, strcontent) ;
+            mShareActionProvider.setShareIntent(intent);
+        }
+
+    }
+
+    @Override
     public void onSplitItemSelected(int position) {
 
     }
 
     @Override
     public void onSplitItemRemoved(int position) {
+
+        mbModified = true ;
+        mManager.remove(position);
+
+        int number = mManager.getNumbers() ;
+        long spendtime = mManager.getTotalElapsedTime() ;
+
+        TextView view = (TextView)findViewById(R.id.txtNumber);
+        view.setText(String.format("%d", number)) ;
+
+        view = (TextView)findViewById(R.id.txtTime);
+        view.setText(String.format("%.02f",spendtime/1000.0)) ;
+
+        mSplitAdapter.notifyDataSetChanged();
+
+        setShareIntent();
 
     }
 
@@ -183,6 +265,8 @@ implements SplitListFragment.OnSplitItemSelectedListerner,
             v.setText(descript);
 
             mbModified = true ;
+
+            setShareIntent();
         }
     }
 
@@ -197,6 +281,12 @@ implements SplitListFragment.OnSplitItemSelectedListerner,
             TextView v = (TextView)findViewById(R.id.txtDescription);
             String strDescript = v.getText().toString();
             values.put(ShotRecord.ShotRecords.COLUMN_NAME_DESCRIPTION, strDescript) ;
+
+            values.put(ShotRecord.ShotRecords.COLUMN_NAME_SHOTS, mManager.getNumbers());
+            values.put(ShotRecord.ShotRecords.COLUMN_NAME_SPENDTIME, mManager.getTotalElapsedTime());
+
+            values.put(ShotRecord.ShotRecords.COLUMN_NAME_SPLITS,mManager.toJSONString()) ;
+
 
             getContentResolver().update(mUri, values, null, null);
             mbModified = false ;
