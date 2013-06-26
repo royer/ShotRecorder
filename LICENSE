@@ -6,4 +6,6 @@ The following open source projects are used in ShotRecorder:
     http://actionbarsherlock.com/
     Apache License v2
 
-
+  * drag-sort-listview
+    https://github.com/royer/drag-sort-listview
+    Apache License v2
