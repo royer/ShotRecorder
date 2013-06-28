@@ -10,3 +10,5 @@ Main features:
 +	Specific or random timer delay.
 +	Save shooting results (history).
 +	Share shooting results to friend.
++   Random Delay Start.
++   Support "comstock", "virginia", "Par Time" modes.

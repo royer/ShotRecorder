@@ -27,5 +27,6 @@
             android:layout_marginRight="4dp"
             android:hint="@string/descript"
             android:enabled="true"
-            android:lines="3"/>
+            android:lines="3"
+            android:focusable="true"/>
 </LinearLayout>

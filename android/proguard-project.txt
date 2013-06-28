@@ -18,3 +18,24 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+#-libraryjars /home/platforms/android-14/android.jar
+#-libraryjars <sdk.dir>/extras/android/support/v4/android-support-v4.jar
+
+#-keep class android.support.v4.app.** { *; }
+#-keep interface android.support.v4.app.** { *; }
+#-keep class com.actionbarsherlock.** { *; }
+#-keep interface com.actionbarsherlock.** { *; }
+#-keepattributes *Annotation*
+
+
+#-keepclassmembers class **.R$* {
+#    public static <fields>;
+#}
+
+
+-assumenosideeffects class android.util.Log {
+
+    <methods>;
+
+}
