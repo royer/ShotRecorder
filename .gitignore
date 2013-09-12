@@ -24,6 +24,19 @@ local.properties
 *.ipr
 *.iws
 out/
+classes
+gen-external-apklibs
+# Gradle
+.gradle
+build
+# Ant
+bin
+gen
+build.xml
+ant.properties
+local.properties
+proguard.cfg
+proguard-project.txt
 
 
 # External tool builders
