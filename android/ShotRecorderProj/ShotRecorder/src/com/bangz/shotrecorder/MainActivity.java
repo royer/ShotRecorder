@@ -20,6 +20,8 @@
 
 package com.bangz.shotrecorder;
 
+import java.util.Arrays;
+
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -45,6 +47,11 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.mobeta.android.dslv.DragSortListView;
 
+//import com.google.android.gms.common.ConnectionResult;
+//import com.google.android.gms.common.GooglePlayServicesUtil;
+//import com.google.api.services.drive.DriveScopes;
+//import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+
 public class MainActivity extends SherlockFragmentActivity implements
 View.OnClickListener, LoaderManager.LoaderCallbacks<Cursor>,
 AdapterView.OnItemClickListener,
@@ -53,6 +60,7 @@ DragSortListView.RemoveListener {
     private static final String TAG = "MainActivity";
 
     private SimpleCursorAdapter mAdapter ;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +133,18 @@ DragSortListView.RemoveListener {
 
         LoaderManager lm = getSupportLoaderManager();
         lm.initLoader(1, null, this);
+        
+        // temp for google drive code
+        
+        // check google play service is install
+//        int r = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this) ;
+//        if (r != ConnectionResult.SUCCESS) {
+//        	GooglePlayServicesUtil.getErrorDialog(r, this, REQUEST_ACCOUNT_PICKER).show();
+//        }
+//        else {
+//	        credential = GoogleAccountCredential.usingOAuth2(this, Arrays.asList(DriveScopes.DRIVE));
+//	        startActivityForResult(credential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
+//        }
 
     }
 	@Override

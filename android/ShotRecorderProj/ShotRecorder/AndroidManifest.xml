@@ -5,11 +5,13 @@
     android:versionName="1.0.0" >
 
     <uses-sdk
-        android:minSdkVersion="7"
+        android:minSdkVersion="8"
         android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-
+	<uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+	<uses-permission android:name="android.permission.INTERNET" />
+	
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -36,14 +38,23 @@
 
             android:label="@string/app_name"
             android:launchMode="singleInstance"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            >
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bangz.shotrecorder.MainActivity" />
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".Prefs"/>
+        <activity android:name=".Prefs">
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bangz.shotrecorder.MainActivity" />
+        </activity>
 
-        <activity android:name=".RecordDetailActivity">
+        <activity android:name=".RecordDetailActivity"
+            >
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bangz.shotrecorder.MainActivity" />
             <intent-filter>
                 <action android:name="android.intent.action.EDIT" />
                 <category android:name="android.intent.category.DEFAULT" />

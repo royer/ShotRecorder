@@ -28,6 +28,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.NavUtils;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
@@ -36,6 +37,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -83,6 +85,10 @@ implements SplitListFragment.OnSplitItemSelectedListerner,
             return ;
         }
 
+        ActionBar bar = getSupportActionBar();
+        bar.setDisplayHomeAsUpEnabled(true);
+
+
         ImageView imageView = (ImageView)findViewById(R.id.imgEditDescript);
         imageView.setOnClickListener(this);
 
@@ -123,6 +129,10 @@ implements SplitListFragment.OnSplitItemSelectedListerner,
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            NavUtils.navigateUpFromSameTask(this);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
 
     }

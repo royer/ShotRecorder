@@ -2,6 +2,7 @@ apply plugin: 'android'
 
 dependencies {
     compile "com.android.support:support-v4:18.0.+"
+    compile 'com.google.android.gms:play-services:3.2.25'
     compile fileTree(dir: 'libs', include: '*.jar', exclude: 'android-support-v4.jar')
     compile project(':actionbarsherlock')
     compile project(':drag-sort-listview')

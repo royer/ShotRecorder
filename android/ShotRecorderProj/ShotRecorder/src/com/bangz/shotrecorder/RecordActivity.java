@@ -39,6 +39,8 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.os.SystemClock;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -46,6 +48,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -268,6 +271,9 @@ public class RecordActivity extends SherlockFragmentActivity
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_recorder);
+
+        ActionBar bar = getSupportActionBar();
+        bar.setDisplayHomeAsUpEnabled(true);
 		
 		strModeNames = getResources().getStringArray(R.array.mode_names) ;
 		strModeValNames = getResources().getStringArray(R.array.mode_value_names) ;
@@ -352,6 +358,22 @@ public class RecordActivity extends SherlockFragmentActivity
             case R.id.action_settings:
                 startActivity(new Intent(this, Prefs.class));
                 break;
+            case android.R.id.home:
+                Intent upIntent = NavUtils.getParentActivityIntent(this);
+                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+                    // This activity is NOT part of this app's task, so create a new task
+                    // when navigating up, with a synthesized back stack
+                    TaskStackBuilder.create(this)
+                            // Add all of this activity's parents to the back stack
+                            .addNextIntentWithParentStack(upIntent)
+                                    // Navigate up to the closest parent
+                            .startActivities();
+                } else {
+                    // This activity is part of this app's task, so simply
+                    // navigate up to the logical parent activity.
+                    NavUtils.navigateUpFromSameTask(this);
+                }
+                return true ;
             default:
                 return super.onOptionsItemSelected(item);
         }

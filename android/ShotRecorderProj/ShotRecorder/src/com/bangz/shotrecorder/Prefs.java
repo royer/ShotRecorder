@@ -21,10 +21,15 @@
 package com.bangz.shotrecorder;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
+import com.actionbarsherlock.view.MenuItem;
 
 /**
  * Created by royer on 30/05/13.
@@ -39,7 +44,32 @@ public class Prefs extends SherlockPreferenceActivity  {
         super.onCreate(savedInstanceState);
 
         addPreferencesFromResource(R.xml.preferences);
+        ActionBar bar = getSupportActionBar();
+        bar.setDisplayHomeAsUpEnabled(true);
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+
+            Intent upIntent = NavUtils.getParentActivityIntent(this);
+            if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+                // This activity is NOT part of this app's task, so create a new task
+                // when navigating up, with a synthesized back stack
+                TaskStackBuilder.create(this)
+                        // Add all of this activity's parents to the back stack
+                        .addNextIntentWithParentStack(upIntent)
+                        // Navigate up to the closest parent
+                        .startActivities();
+            } else {
+                // This activity is part of this app's task, so simply
+                // navigate up to the logical parent activity.
+                NavUtils.navigateUpFromSameTask(this);
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public static int getThresholdDB(Context context) {
