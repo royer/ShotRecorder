@@ -6,5 +6,15 @@
         android:showAsAction="always"
         android:icon="@android:drawable/ic_menu_preferences"
         android:title="@string/action_settings"/>
+    <item
+        android:id="@+id/action_backup"
+        android:orderInCategory="200"
+        android:showAsAction="ifRoom"
+        android:title="@string/backup" />
+    <item
+        android:id="@+id/action_restore"
+        android:orderInCategory="200"
+        android:showAsAction="ifRoom"
+        android:title="@string/restore" />
 
 </menu>

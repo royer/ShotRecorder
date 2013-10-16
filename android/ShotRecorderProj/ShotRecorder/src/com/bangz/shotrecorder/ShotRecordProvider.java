@@ -33,6 +33,11 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.util.Log;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -44,7 +49,7 @@ import java.util.HashMap;
 public class ShotRecordProvider extends ContentProvider {
     private static final String TAG = "ShotRecordProvider" ;
 
-    private static final String DATABASE_NAME = "shotrecord.db";
+    public static final String DATABASE_NAME = "shotrecord.db";
     private static final int DATABASE_VERSION = 1 ;
 
     private DatabaseHelper mOpenHelper ;
@@ -276,6 +281,44 @@ public class ShotRecordProvider extends ContentProvider {
 //                    Log.e(TAG,"",ex);
 //                }
 //            }
+        }
+
+        public boolean backupDatabase(String topath) throws IOException {
+
+            // Close the SQLiteOpenHelper so it will commit the database
+            close();
+
+            File tofile = new File(topath);
+            File dbfile = new File("/data/data/com.bangz.shotrecorder/databases/"+DATABASE_NAME) ;
+
+            if (dbfile.exists()) {
+                copyFile(new FileInputStream(dbfile), new FileOutputStream(tofile));
+                return true ;
+            } else
+                return false;
+
+        }
+
+        private static void copyFile(FileInputStream fromFile, FileOutputStream toFile) throws IOException {
+
+            FileChannel fromChannel = null ;
+            FileChannel toChannel = null ;
+
+            try {
+                fromChannel = fromFile.getChannel();
+                toChannel = toFile.getChannel();
+                fromChannel.transferTo(0, fromChannel.size(), toChannel);
+            } finally {
+                try {
+                    if (fromChannel != null) {
+                        fromChannel.close();
+                    }
+                } finally {
+                    if (toChannel != null) {
+                        toChannel.close();
+                    }
+                }
+            }
         }
     }
 }

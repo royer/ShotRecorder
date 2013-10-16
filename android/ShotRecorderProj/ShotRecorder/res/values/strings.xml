@@ -53,5 +53,9 @@
     <string name="nohistoryrecords">No history records. Click \'Start Recorder\' to start.</string>
     <string name="share">Share</string>
     <string name="share_content" formatted="false">"My Shot Record: %s\n\t SHOTS:\t %s\n\t TIME:\t %s(sec)\n\t Date:\t %s"</string>
+    <string name="backup">Backup...</string>
+    <string name="restore">Restore...</string>
+    <string name="unsupport_google_drive">This device doesn\'t support to backup to Google Drive.</string>
+    <string name="must_install_google_play">Google Play Services must be installed.</string>
 
 </resources>
